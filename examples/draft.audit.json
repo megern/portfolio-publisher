@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "project": "SOC Triage",
+  "version": "0.1.0",
+  "verified_metrics": [
+    {
+      "label": "Synthetic events",
+      "value": 7,
+      "unit": "",
+      "source": "evidence.json",
+      "field": "measurements.reviewed_events",
+      "sha256": "c104cb584186ef05b61a4adc5324078a154a6bb4d9b1bbdd195b30ce0c189fa0"
+    },
+    {
+      "label": "Synthetic findings",
+      "value": 3,
+      "unit": "",
+      "source": "evidence.json",
+      "field": "measurements.findings",
+      "sha256": "c104cb584186ef05b61a4adc5324078a154a6bb4d9b1bbdd195b30ce0c189fa0"
+    }
+  ],
+  "review_required": true,
+  "limitations": [
+    "Narrative is supplied by the author and is not fact-checked.",
+    "Only numeric claims in the metrics list are checked against local evidence."
+  ]
+}

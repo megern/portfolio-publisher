@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "project": "mac-local-training",
+  "version": "v0.1.0",
+  "verified_metrics": [
+    {
+      "label": "Random seed / البذرة العشوائية",
+      "value": 17,
+      "unit": "",
+      "source": "benchmark.json",
+      "field": "runs.all.config.seed",
+      "sha256": "f72298bdee5c45858a437d8c7d04f92c79560cabf5990b80b607333062c9f110"
+    },
+    {
+      "label": "Trainer steps — all / خطوات تدريب كل الطبقات",
+      "value": 40,
+      "unit": "",
+      "source": "benchmark.json",
+      "field": "runs.all.steps",
+      "sha256": "f72298bdee5c45858a437d8c7d04f92c79560cabf5990b80b607333062c9f110"
+    },
+    {
+      "label": "Trainer steps — rotating / خطوات تدريب التدوير",
+      "value": 40,
+      "unit": "",
+      "source": "benchmark.json",
+      "field": "runs.rotating.steps",
+      "sha256": "f72298bdee5c45858a437d8c7d04f92c79560cabf5990b80b607333062c9f110"
+    },
+    {
+      "label": "Updates to layer 0 — all / تحديثات الطبقة 0 عند تدريب كل الطبقات",
+      "value": 40,
+      "unit": "",
+      "source": "benchmark.json",
+      "field": "runs.all.layer_update_coverage.0",
+      "sha256": "f72298bdee5c45858a437d8c7d04f92c79560cabf5990b80b607333062c9f110"
+    },
+    {
+      "label": "Updates to layer 0 — rotating / تحديثات الطبقة 0 عند التدوير",
+      "value": 10,
+      "unit": "",
+      "source": "benchmark.json",
+      "field": "runs.rotating.layer_update_coverage.0",
+      "sha256": "f72298bdee5c45858a437d8c7d04f92c79560cabf5990b80b607333062c9f110"
+    },
+    {
+      "label": "Peak resident optimizer state — all / ذروة ذاكرة حالة المحسّن لكل الطبقات",
+      "value": 14348,
+      "unit": "bytes",
+      "source": "benchmark.json",
+      "field": "runs.all.peak_optimizer_resident_bytes",
+      "sha256": "f72298bdee5c45858a437d8c7d04f92c79560cabf5990b80b607333062c9f110"
+    },
+    {
+      "label": "Peak resident optimizer state — rotating / ذروة ذاكرة حالة المحسّن عند التدوير",
+      "value": 3596,
+      "unit": "bytes",
+      "source": "benchmark.json",
+      "field": "runs.rotating.peak_optimizer_resident_bytes",
+      "sha256": "f72298bdee5c45858a437d8c7d04f92c79560cabf5990b80b607333062c9f110"
+    },
+    {
+      "label": "Process RSS high-water — all / ذروة RSS لكل الطبقات",
+      "value": 105185280,
+      "unit": "bytes",
+      "source": "benchmark.json",
+      "field": "runs.all.process_rss_high_water_bytes",
+      "sha256": "f72298bdee5c45858a437d8c7d04f92c79560cabf5990b80b607333062c9f110"
+    },
+    {
+      "label": "Process RSS high-water — rotating / ذروة RSS عند التدوير",
+      "value": 110051328,
+      "unit": "bytes",
+      "source": "benchmark.json",
+      "field": "runs.rotating.process_rss_high_water_bytes",
+      "sha256": "f72298bdee5c45858a437d8c7d04f92c79560cabf5990b80b607333062c9f110"
+    }
+  ],
+  "review_required": true,
+  "limitations": [
+    "Narrative is supplied by the author and is not fact-checked.",
+    "Only numeric claims in the metrics list are checked against local evidence."
+  ]
+}

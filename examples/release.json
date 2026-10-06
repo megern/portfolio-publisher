@@ -1,0 +1,23 @@
+{
+  "project": "SOC Triage",
+  "version": "0.1.0",
+  "summary_en": "A local rule baseline that keeps the evidence behind authentication findings. The numbers below are synthetic examples of the draft format.",
+  "summary_ar": "خط أساس محلي يحتفظ بالأدلة وراء تنبيهات تسجيل الدخول. الأرقام التالية أمثلة اصطناعية على صيغة المسودة.",
+  "limitations_en": "Synthetic fixture; no production detection or time-saving claim.",
+  "limitations_ar": "بيانات اصطناعية؛ لا ندعي كشفًا إنتاجيًا أو توفير وقت مقاسًا.",
+  "repository_url": "https://github.com/megern/soc-triage",
+  "metrics": [
+    {
+      "label": "Synthetic events",
+      "source": "evidence.json",
+      "field": "measurements.reviewed_events",
+      "value": 7
+    },
+    {
+      "label": "Synthetic findings",
+      "source": "evidence.json",
+      "field": "measurements.findings",
+      "value": 3
+    }
+  ]
+}

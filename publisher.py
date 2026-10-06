@@ -1,0 +1,73 @@
+"""Build professional post drafts from local, verifiable experiment evidence."""
+from __future__ import annotations
+import argparse
+import hashlib
+import json
+import math
+from pathlib import Path
+from urllib.parse import urlparse
+
+
+def verified_metrics(spec: dict, evidence_root: Path) -> list[dict]:
+    result = []
+    root = evidence_root.resolve()
+    for metric in spec.get("metrics", []):
+        source = (root / metric["source"]).resolve()
+        if not source.is_relative_to(root) or not source.is_file():
+            raise ValueError("metric source must be a file inside evidence-root")
+        raw = source.read_bytes()
+        value = json.loads(raw)
+        for key in metric["field"].split("."):
+            value = value[int(key)] if isinstance(value, list) else value[key]
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or (isinstance(value, float) and not math.isfinite(value)):
+            raise ValueError("metric must resolve to a finite numeric measurement")
+        if "value" in metric and metric["value"] != value:
+            raise ValueError("declared metric does not match evidence")
+        result.append({"label": metric["label"], "value": value, "unit": metric.get("unit", ""),
+            "source": str(source.relative_to(root)), "field": metric["field"],
+            "sha256": hashlib.sha256(raw).hexdigest()})
+    return result
+
+
+def make_draft(spec: dict, evidence_root: Path) -> tuple[str, dict]:
+    for field in ("project", "version", "summary_en", "summary_ar", "limitations_en", "limitations_ar", "repository_url"):
+        if not isinstance(spec.get(field), str) or not spec[field].strip():
+            raise ValueError(f"missing nonempty {field}")
+    url = urlparse(spec["repository_url"])
+    if url.scheme != "https" or url.netloc != "github.com" or len(url.path.strip("/").split("/")) != 2 or url.username or url.query or url.fragment:
+        raise ValueError("repository_url must be a canonical HTTPS GitHub repository link")
+    metrics = verified_metrics(spec, evidence_root)
+    values = "\n".join(f"- {m['label']}: {m['value']}{(' ' + str(m['unit'])) if m['unit'] else ''}." for m in metrics)
+    text = f"# {spec['project']} {spec['version']} — draft\n\n## English\n\n{spec['summary_en']}\n\n{values}\n\nLimits: {spec['limitations_en']}\n\nCode: {spec['repository_url']}\n\n## العربية\n\n{spec['summary_ar']}\n\n{values}\n\nحدود التجربة: {spec['limitations_ar']}\n\nالكود: {spec['repository_url']}\n\n---\nDraft for human review. No post has been published.\n"
+    return text, {"schema_version": 1, "project": spec["project"], "version": spec["version"], "verified_metrics": metrics,
+        "review_required": True, "limitations": ["Narrative is supplied by the author and is not fact-checked.",
+            "Only numeric claims in the metrics list are checked against local evidence."]}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("spec", type=Path)
+    parser.add_argument("--evidence-root", type=Path, default=Path("."))
+    parser.add_argument("--output", type=Path, default=Path("draft.md"))
+    args = parser.parse_args()
+    try:
+        draft, audit = make_draft(json.loads(args.spec.read_text()), args.evidence_root)
+        audit_output = args.output.with_suffix(".audit.json")
+        protected = {args.spec.resolve()}
+        protected.update((args.evidence_root.resolve() / metric["source"]).resolve()
+                         for metric in audit["verified_metrics"])
+        outputs = {args.output.resolve(), audit_output.resolve()}
+        if outputs & protected:
+            raise ValueError("draft and audit outputs must not replace the specification or verified evidence")
+        if len(outputs) != 2:
+            raise ValueError("draft and audit outputs must be different files")
+    except (OSError, ValueError, KeyError, IndexError, TypeError) as exc:
+        parser.exit(2, f"Evidence error: {exc}\n")
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(draft)
+    audit_output.write_text(json.dumps(audit, ensure_ascii=False, indent=2) + "\n")
+    print(f"Draft saved to {args.output}; nothing was posted.")
+
+
+if __name__ == "__main__":
+    main()
