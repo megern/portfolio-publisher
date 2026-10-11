@@ -69,10 +69,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("spec", type=Path)
     parser.add_argument("--evidence-root", type=Path, default=Path("."))
+    parser.add_argument("--verify-only", action="store_true", help="Print evidence audit without writing a draft")
+    parser.add_argument("--require-pins", action="store_true", help="Require expected_sha256 on every metric")
     parser.add_argument("--output", type=Path, default=Path("draft.md"))
     args = parser.parse_args()
     try:
-        draft, audit = make_draft(json.loads(args.spec.read_text()), args.evidence_root)
+        spec = json.loads(args.spec.read_text())
+        if not isinstance(spec, dict) or not isinstance(spec.get("metrics", []), list):
+            raise ValueError("Specification must be an object with a metrics array")
+        if args.require_pins and any(not isinstance(metric, dict) or 'expected_sha256' not in metric for metric in spec.get('metrics', [])):
+            raise ValueError("All metrics need expected_sha256 in pinned mode")
+        draft, audit = make_draft(spec, args.evidence_root)
+        if args.verify_only:
+            print(json.dumps(audit, ensure_ascii=False, indent=2))
+            return
         audit_output = args.output.with_suffix(".audit.json")
         protected = {args.spec.resolve()}
         protected.update((args.evidence_root.resolve() / metric["source"]).resolve()

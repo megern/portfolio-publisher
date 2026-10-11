@@ -1,0 +1,23 @@
+{
+  "releases": 9,
+  "tests_passed": 212,
+  "reverseproof": {
+    "variants": 12,
+    "supported_clamp_hypotheses": 6,
+    "abstentions": 6,
+    "affine_controls": 4,
+    "affine_abstentions": 4
+  },
+  "training": {
+    "tiny_runs": 6,
+    "seeds": 3,
+    "optimizer_bytes_all": 14348,
+    "optimizer_bytes_rotating": 3596
+  },
+  "confirmation": {
+    "paired_validation_cases": 128,
+    "fixed_seeds": 2,
+    "leave_one_out_factor_direction_changes": 0
+  },
+  "scope": "Development checks and synthetic/local experiments. Full dataset and scope details remain in each repository; no production or general-model-quality claim."
+}

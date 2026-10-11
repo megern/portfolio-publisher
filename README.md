@@ -1,5 +1,20 @@
 # Portfolio Publisher
 
+## Public preview v0.2.0
+
+Python 3.11+; commands below use a local Mac/Linux shell. Source and reports are public; this is a research/development preview, not a production-security certification.
+
+```sh
+git clone --branch v0.2.0 https://github.com/megern/portfolio-publisher.git
+cd portfolio-publisher
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install .
+portfolio-publisher --help
+```
+
+The installed entry point was exercised outside the checkout in a separate local environment. This revision has 12 passing local tests. No hosted CI or cloud compute is used. Report an issue with the command, Python/OS versions, sanitized input and expected/actual behavior; remove credentials and private records first. Benchmarks describe the supplied fixtures and hardware.
+
 Produce bilingual post drafts from local experiment reports. Numeric measurements are read from their source JSON files; supplied values that disagree with that evidence are rejected. Each draft has an audit file containing the source hash and JSON field.
 
 ```sh
@@ -47,3 +62,14 @@ python3 -m unittest discover -s .
 ```
 
 Pins and the generated audit establish file consistency, not the truth of the narrative. Drafts still require human review. This tool does not post to LinkedIn or any other platform.
+
+
+### Verify without creating content
+
+```sh
+portfolio-publisher examples/release.json --evidence-root examples --verify-only --require-pins
+```
+
+`--verify-only` prints the audit without writing any files. `--require-pins` rejects any metric without an expected source digest. Publishing remains a separate human action. The release catalog under `examples/public-preview/` links all nine projects and states their public-preview scope; it does not assert popularity, adoption or guaranteed hiring outcomes.
+
+Browse [the nine-project release catalog](examples/public-preview/release-catalog.json) for links, versions and local test counts. Content drafts remain local for review; this repository contains the catalog and verified numeric evidence only.

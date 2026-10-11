@@ -1,0 +1,69 @@
+{
+  "owner": "megern",
+  "scope": "Public research/development previews; no production readiness, popularity or hiring guarantee.",
+  "projects": [
+    {
+      "name": "workflow-guard",
+      "tag": "v0.2.0",
+      "url": "https://github.com/megern/workflow-guard",
+      "feature": "Local GitHub workflow checks with source locations and SARIF export",
+      "local_tests_passed": 20
+    },
+    {
+      "name": "soc-triage",
+      "tag": "v0.2.0",
+      "url": "https://github.com/megern/soc-triage",
+      "feature": "Offline authentication-event correlation with evidence IDs",
+      "local_tests_passed": 12
+    },
+    {
+      "name": "vulnerability-radar",
+      "tag": "v0.2.0",
+      "url": "https://github.com/megern/vulnerability-radar",
+      "feature": "Indexed offline PyPI advisory matching with input hashes",
+      "local_tests_passed": 14
+    },
+    {
+      "name": "portfolio-publisher",
+      "tag": "v0.2.0",
+      "url": "https://github.com/megern/portfolio-publisher",
+      "feature": "Pinned metric verification and reviewed content drafts",
+      "local_tests_passed": 12
+    },
+    {
+      "name": "llm-security-lab",
+      "tag": "v0.2.0",
+      "url": "https://github.com/megern/llm-security-lab",
+      "feature": "Arabic/English local-model traces and strict paired comparison",
+      "local_tests_passed": 25
+    },
+    {
+      "name": "m1-memory-research",
+      "tag": "v0.12.0",
+      "url": "https://github.com/megern/m1-memory-research",
+      "feature": "Audited local inference/adaptation research and case-influence diagnostics",
+      "local_tests_passed": 84
+    },
+    {
+      "name": "reverseproof",
+      "tag": "v0.3.0",
+      "url": "https://github.com/megern/reverseproof",
+      "feature": "Static evidence, restricted hypotheses and approved owned-fixture verification",
+      "local_tests_passed": 24
+    },
+    {
+      "name": "mac-local-training",
+      "tag": "v0.2.0",
+      "url": "https://github.com/megern/mac-local-training",
+      "feature": "Portable memory planning and local rotating LoRA experiments",
+      "local_tests_passed": 17
+    },
+    {
+      "name": "ai-programming-foundations-project",
+      "tag": "v0.2.0",
+      "url": "https://github.com/megern/ai-programming-foundations-project",
+      "feature": "Wine dataset auditing and descriptive deduplication sensitivity",
+      "local_tests_passed": 4
+    }
+  ]
+}
