@@ -1,5 +1,17 @@
 # Portfolio Publisher
 
+## Refusing drafts from incomplete evidence (local development)
+
+Specifications may include `evidence_requirements`, each with `source`, `field`,
+`equals`, and `expected_sha256`. For example, gate a draft on a hash-pinned
+report's `complete` field being `true`. Every gate must pass before generating
+or verifying a draft; an accurate numeric value from an incomplete experiment
+is insufficient. Scalar types must match exactly, so integer `1` does not pass
+a boolean `true` gate. Gate sources are protected from output overwrites.
+
+These checks verify supplied local evidence fields. They do not establish the
+truth of a narrative, scientific novelty, or authenticity of the evidence.
+
 ## Public preview v0.2.0
 
 Python 3.11+; commands below use a local Mac/Linux shell. Source and reports are public; this is a research/development preview, not a production-security certification.

@@ -58,11 +58,49 @@ def make_draft(spec: dict, evidence_root: Path) -> tuple[str, dict]:
     if url.scheme != "https" or url.netloc != "github.com" or len(url.path.strip("/").split("/")) != 2 or url.username or url.query or url.fragment:
         raise ValueError("repository_url must be a canonical HTTPS GitHub repository link")
     metrics = verified_metrics(spec, evidence_root)
+    requirements = verified_requirements(spec, evidence_root)
     values = "\n".join(f"- {m['label']}: {m['value']}{(' ' + str(m['unit'])) if m['unit'] else ''}." for m in metrics)
     text = f"# {spec['project']} {spec['version']} — draft\n\n## English\n\n{spec['summary_en']}\n\n{values}\n\nLimits: {spec['limitations_en']}\n\nCode: {spec['repository_url']}\n\n## العربية\n\n{spec['summary_ar']}\n\n{values}\n\nحدود التجربة: {spec['limitations_ar']}\n\nالكود: {spec['repository_url']}\n\n---\nDraft for human review. No post has been published.\n"
     return text, {"schema_version": 1, "project": spec["project"], "version": spec["version"], "verified_metrics": metrics,
+        "verified_requirements": requirements,
         "review_required": True, "limitations": ["Narrative is supplied by the author and is not fact-checked.",
             "Only numeric claims in the metrics list are checked against local evidence."]}
+
+
+def verified_requirements(spec: dict, evidence_root: Path) -> list[dict]:
+    """Optional pinned gates, e.g. refusing a draft from an incomplete run."""
+    requirements = spec.get('evidence_requirements', [])
+    if not isinstance(requirements, list):
+        raise ValueError('evidence_requirements must be an array')
+    root = evidence_root.resolve()
+    result = []
+    for requirement in requirements:
+        if not isinstance(requirement, dict) or any(not isinstance(requirement.get(key), str)
+                or not requirement[key].strip() for key in ('source', 'field', 'expected_sha256')):
+            raise ValueError('Each evidence requirement needs source, field and expected_sha256')
+        expected = requirement.get('equals')
+        if type(expected) not in (str, bool, int, float) or isinstance(expected, float) and not math.isfinite(expected):
+            raise ValueError('Requirement equals must be a finite scalar')
+        source = (root / requirement['source']).resolve()
+        if not source.is_relative_to(root) or not source.is_file():
+            raise ValueError('Requirement source must be inside evidence-root')
+        raw = source.read_bytes()
+        digest = hashlib.sha256(raw).hexdigest()
+        if digest != requirement['expected_sha256']:
+            raise ValueError('Requirement evidence hash changed')
+        value = json.loads(raw)
+        for field in requirement['field'].split('.'):
+            if isinstance(value, dict):
+                value = value[field]
+            elif isinstance(value, list) and field.isdecimal():
+                value = value[int(field)]
+            else:
+                raise ValueError('Invalid evidence requirement field')
+        if type(value) is not type(expected) or value != expected:
+            raise ValueError('Evidence requirement not satisfied: ' + requirement['field'])
+        result.append({'source': str(source.relative_to(root)), 'field': requirement['field'],
+                       'equals': expected, 'sha256': digest})
+    return result
 
 
 def main():
@@ -87,6 +125,8 @@ def main():
         protected = {args.spec.resolve()}
         protected.update((args.evidence_root.resolve() / metric["source"]).resolve()
                          for metric in audit["verified_metrics"])
+        protected.update((args.evidence_root.resolve() / gate['source']).resolve()
+                         for gate in audit['verified_requirements'])
         outputs = {args.output.resolve(), audit_output.resolve()}
         if outputs & protected:
             raise ValueError("draft and audit outputs must not replace the specification or verified evidence")
