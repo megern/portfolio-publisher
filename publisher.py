@@ -10,22 +10,43 @@ from urllib.parse import urlparse
 
 def verified_metrics(spec: dict, evidence_root: Path) -> list[dict]:
     result = []
+    if not isinstance(spec.get('metrics', []), list):
+        raise ValueError("metrics must be an array")
     root = evidence_root.resolve()
     for metric in spec.get("metrics", []):
+        if not isinstance(metric, dict):
+            raise ValueError("each metric must be an object")
+        for key in ('source', 'field', 'label'):
+            if not isinstance(metric.get(key), str) or not metric[key].strip():
+                raise ValueError("metric requires nonempty " + key)
+        if not isinstance(metric.get('unit', ''), str):
+            raise ValueError("metric unit must be a string")
         source = (root / metric["source"]).resolve()
         if not source.is_relative_to(root) or not source.is_file():
             raise ValueError("metric source must be a file inside evidence-root")
         raw = source.read_bytes()
+        digest = hashlib.sha256(raw).hexdigest()
+        if 'expected_sha256' in metric and metric['expected_sha256'] != digest:
+            raise ValueError("evidence source changed from the expected SHA-256")
         value = json.loads(raw)
         for key in metric["field"].split("."):
-            value = value[int(key)] if isinstance(value, list) else value[key]
+            if isinstance(value, list):
+                if not key.isdecimal():
+                    raise ValueError("list indices must be nonnegative decimal integers")
+                value = value[int(key)]
+            elif isinstance(value, dict):
+                value = value[key]
+            else:
+                raise ValueError("metric field traverses a scalar")
         if isinstance(value, bool) or not isinstance(value, (int, float)) or (isinstance(value, float) and not math.isfinite(value)):
             raise ValueError("metric must resolve to a finite numeric measurement")
+        if 'value' in metric and (isinstance(metric['value'], bool) or not isinstance(metric['value'], (int, float)) or (isinstance(metric['value'], float) and not math.isfinite(metric['value']))):
+            raise ValueError("declared metric must be a finite number")
         if "value" in metric and metric["value"] != value:
             raise ValueError("declared metric does not match evidence")
         result.append({"label": metric["label"], "value": value, "unit": metric.get("unit", ""),
             "source": str(source.relative_to(root)), "field": metric["field"],
-            "sha256": hashlib.sha256(raw).hexdigest()})
+            "sha256": digest})
     return result
 
 

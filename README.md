@@ -37,3 +37,13 @@ Tests reject inflated numbers, path escapes, and non-finite values, check eviden
 ## العربية
 
 يجهّز مسودة بالعربية والإنجليزية من نتائج محفوظة محليًا. يراجع الأرقام مقابل ملفاتها الأصلية ويحتفظ ببصماتها. النشر والمراجعة مسؤولية صاحب المحتوى؛ لا ينشر تلقائيًا ولا يختلق أرقامًا أو تاريخ عمل.
+
+## Pinning metric evidence
+
+Each metric may include `expected_sha256` with the digest of its entire source file. The publisher rejects a changed source even if the selected numeric value is unchanged. `examples/release.json` demonstrates pinned synthetic evidence. Omitting the pin preserves compatibility with earlier specs. Metric declarations require finite numbers; booleans and negative list indices are rejected.
+
+```sh
+python3 -m unittest discover -s .
+```
+
+Pins and the generated audit establish file consistency, not the truth of the narrative. Drafts still require human review. This tool does not post to LinkedIn or any other platform.

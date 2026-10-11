@@ -11,13 +11,15 @@
       "label": "Synthetic events",
       "source": "evidence.json",
       "field": "measurements.reviewed_events",
-      "value": 7
+      "value": 7,
+      "expected_sha256": "c104cb584186ef05b61a4adc5324078a154a6bb4d9b1bbdd195b30ce0c189fa0"
     },
     {
       "label": "Synthetic findings",
       "source": "evidence.json",
       "field": "measurements.findings",
-      "value": 3
+      "value": 3,
+      "expected_sha256": "c104cb584186ef05b61a4adc5324078a154a6bb4d9b1bbdd195b30ce0c189fa0"
     }
   ]
 }
