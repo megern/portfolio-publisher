@@ -1,5 +1,11 @@
 # Portfolio Publisher
 
+## Version 1.0.0
+
+Multi-project evidence review. Builds a local project portfolio from mandatory hash-pinned metrics and evidence requirements. Failure in any specification stops the whole build. Preserves the verification audit and labels all content as a local draft. No LinkedIn client, automated posting, fabricated project history or adoption claims.
+
+See the [complete local workflow](docs/v1-workflow.md) for installation, commands, review artifacts and limits. Earlier preview notes below describe their historical tagged revisions.
+
 ## Refusing drafts from incomplete evidence (local development)
 
 Specifications may include `evidence_requirements`, each with `source`, `field`,
@@ -85,3 +91,6 @@ portfolio-publisher examples/release.json --evidence-root examples --verify-only
 `--verify-only` prints the audit without writing any files. `--require-pins` rejects any metric without an expected source digest. Publishing remains a separate human action. The release catalog under `examples/public-preview/` links all nine projects and states their public-preview scope; it does not assert popularity, adoption or guaranteed hiring outcomes.
 
 Browse [the nine-project release catalog](examples/public-preview/release-catalog.json) for links, versions and local test counts. Content drafts remain local for review; this repository contains the catalog and verified numeric evidence only.
+
+
+The [v1.0 integrated release catalog](examples/integrated-v1/catalog.json) lists all nine project workflows and their locally verified test counts. It supersedes the historical preview catalog for current versions.

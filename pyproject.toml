@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "portfolio-publisher"
-version = "0.2.0"
+version = "1.0.0"
 description = "Evidence-pinned local content drafts"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -15,8 +15,9 @@ Repository = "https://github.com/megern/portfolio-publisher"
 Issues = "https://github.com/megern/portfolio-publisher/issues"
 
 [project.scripts]
+portfolio-review = "portfolio:main"
 portfolio-publisher = "publisher:main"
 
 [tool.setuptools]
-py-modules = ["publisher"]
+py-modules = ["portfolio", "portfolio_report_bundle", "publisher"]
 

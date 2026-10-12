@@ -1,0 +1,73 @@
+{
+  "version": "1.0.0",
+  "date": "2026-10-12",
+  "tested_locally": true,
+  "total_tests": 299,
+  "projects": [
+    {
+      "repository": "workflow-guard",
+      "url": "https://github.com/megern/workflow-guard",
+      "version": "1.0.0",
+      "tests": 28,
+      "feature": "Repository scan with policy/baseline gate and local review bundle"
+    },
+    {
+      "repository": "soc-triage",
+      "url": "https://github.com/megern/soc-triage",
+      "version": "1.0.0",
+      "tests": 18,
+      "feature": "Persistent transactional casebook, ownership, ingestion-policy history and evidence-driven reopening"
+    },
+    {
+      "repository": "vulnerability-radar",
+      "url": "https://github.com/megern/vulnerability-radar",
+      "version": "1.0.0",
+      "tests": 24,
+      "feature": "Upgrade candidates rechecked against every active snapshot advisory"
+    },
+    {
+      "repository": "portfolio-publisher",
+      "url": "https://github.com/megern/portfolio-publisher",
+      "version": "1.0.0",
+      "tests": 19,
+      "feature": "Multi-project hash-pinned evidence review without posting"
+    },
+    {
+      "repository": "llm-security-lab",
+      "url": "https://github.com/megern/llm-security-lab",
+      "version": "1.0.0",
+      "tests": 31,
+      "feature": "Multi-candidate attack/benign regression gates with inconclusive outcomes retained"
+    },
+    {
+      "repository": "m1-memory-research",
+      "url": "https://github.com/megern/m1-memory-research",
+      "version": "1.0.0",
+      "tests": 92,
+      "feature": "Study export/hash/coverage/paired-ratio audit catalog"
+    },
+    {
+      "repository": "reverseproof",
+      "url": "https://github.com/megern/reverseproof",
+      "version": "1.0.0",
+      "tests": 32,
+      "feature": "Multi-target static evidence review with abstentions/errors retained"
+    },
+    {
+      "repository": "mac-local-training",
+      "url": "https://github.com/megern/mac-local-training",
+      "version": "1.0.0",
+      "tests": 45,
+      "feature": "Tile-16 supervised-position training and complete study review"
+    },
+    {
+      "repository": "ai-programming-foundations-project",
+      "url": "https://github.com/megern/ai-programming-foundations-project",
+      "version": "1.0.0",
+      "tests": 10,
+      "feature": "Leakage-aware grouped ridge train/validation/test and inference API"
+    }
+  ],
+  "research_note": "180 completed local confirmation runs; latest tested rank-256 tile projection reduces MLX allocator peak 14.75% and measured-loop duration 17.67%, with zero observed final state errors. Synthetic 256-token conditioning stress, not general quality/novelty/70B feasibility.",
+  "publication": "GitHub versioned source updates; no LinkedIn publication or replies. No raw SMS, token rows, model/adapter weights or casebook databases are release assets."
+}
